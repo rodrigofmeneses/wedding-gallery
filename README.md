@@ -16,6 +16,7 @@ You have received a request from a friend to create a gallery for their wedding 
 - Users are able to like and comment photos.
 - Wife and Husband have authority to approve or decline friend's photos.
 - Implementing endpoints for searching, creating, editing, and deleting photos.
+- Postman collection with examples of usage.
 
 ---
 
