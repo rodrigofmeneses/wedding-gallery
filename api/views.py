@@ -3,8 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from drf_yasg.utils import swagger_auto_schema
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from drf_yasg.utils import swagger_auto_schema, no_body
 from .models import Photo
 from .serializers import (
     UserSerializer,
@@ -35,7 +35,11 @@ class PhotosViewset(ModelViewSet):
             return Photo.objects.all()
         return Photo.objects.filter(status=1)
 
-    @action(detail=True, methods=['post'])
+    @swagger_auto_schema(
+        request_body=no_body,
+        responses={'200': PhotoSerializer()},
+        operation_description="Approve a photo")
+    @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])
     def approve(self, request, pk=None):
         photo = self.get_object()
         photo.status = 1
@@ -43,6 +47,17 @@ class PhotosViewset(ModelViewSet):
         serializer = self.get_serializer(photo)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        request_body=no_body,
+        responses={'200': PhotoSerializer()},
+        operation_description="Decline a photo")
+    @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])
+    def decline(self, request, pk=None):
+        photo = self.get_object()
+        photo.status = 2
+        photo.save()
+        serializer = self.get_serializer(photo)
+        return Response(serializer.data)
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-

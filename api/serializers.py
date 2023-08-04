@@ -24,8 +24,8 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-        fields = ['id', 'author', 'url', 'created_at']
-        read_only_fields = ['author', 'created_at']
+        fields = ['id', 'author', 'url', 'status', 'created_at']
+        read_only_fields = ['author', 'status', 'created_at']
 
 
 class CommentSerializer(serializers.ModelSerializer):
