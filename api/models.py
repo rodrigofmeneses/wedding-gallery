@@ -3,9 +3,16 @@ from django.contrib.auth.models import User
 
 
 class Photo(models.Model):
+    STATUS_CHOICE = (
+        (0, 'PENDING'),
+        (1, 'APPROVED'),
+        (2, 'DECLINED'),
+    )
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     url = models.TextField()
+    status = models.IntegerField(choices=STATUS_CHOICE, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
