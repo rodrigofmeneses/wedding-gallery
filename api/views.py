@@ -71,11 +71,15 @@ class PhotosViewset(ModelViewSet):
     def like(self, request, pk=None):
         match request.method:
             case 'GET':
-                ...
+                photo = self.get_object()
+                queryset = photo.likes.all()
+                serializer = LikeSerializer(queryset, many=True)
+                return Response(serializer.data)
             case 'POST':
                 photo = self.get_object()
                 user = self.request.user
-                like = Like(photo=photo, user=user)
+                like = Like.objects.get_or_create(photo=photo, user=user)
+                like = like[0]
                 like.save()
                 return Response({"user": user.id, "photo": photo.id})
 

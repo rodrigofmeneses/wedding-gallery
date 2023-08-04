@@ -23,6 +23,10 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE,
+                              related_name="likes")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ["photo", "user"]
