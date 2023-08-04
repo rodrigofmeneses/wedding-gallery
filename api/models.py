@@ -10,7 +10,6 @@ class Photo(models.Model):
     )
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
     url = models.TextField()
     status = models.IntegerField(choices=STATUS_CHOICE, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -24,6 +23,6 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    post = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -5,10 +5,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from drf_yasg.utils import swagger_auto_schema, no_body
-from .models import Photo
+from .models import Photo, Like
 from .serializers import (
     UserSerializer,
-    PhotoSerializer
+    PhotoSerializer,
+    LikeSerializer
 )
 
 
@@ -29,11 +30,6 @@ class PhotosViewset(ModelViewSet):
     serializer_class = PhotoSerializer
     queryset = Photo.objects.none()
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return Photo.objects.all()
-        return Photo.objects.filter(status=1)
 
     @swagger_auto_schema(
         request_body=no_body,
@@ -58,6 +54,35 @@ class PhotosViewset(ModelViewSet):
         photo.save()
         serializer = self.get_serializer(photo)
         return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=no_body,
+        tags=['likes'],
+        method='post',
+        responses={'200': LikeSerializer()},
+        operation_description="Like a photo")
+    @swagger_auto_schema(
+        request_body=no_body,
+        tags=['likes'],
+        method='get',
+        responses={'200': LikeSerializer()},
+        operation_description="Get likes")
+    @action(detail=True, methods=['get', 'post'])
+    def like(self, request, pk=None):
+        match request.method:
+            case 'GET':
+                ...
+            case 'POST':
+                photo = self.get_object()
+                user = self.request.user
+                like = Like(photo=photo, user=user)
+                like.save()
+                return Response({"user": user.id, "photo": photo.id})
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Photo.objects.all()
+        return Photo.objects.filter(status=1)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
