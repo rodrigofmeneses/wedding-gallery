@@ -99,7 +99,10 @@ class PhotosViewset(ModelViewSet):
     def comment(self, request, pk=None):
         match request.method:
             case 'GET':
-                ...
+                photo = self.get_object()
+                queryset = photo.comments.all()
+                serializer = CommentSerializer(queryset, many=True)
+                return Response(serializer.data)
             case 'POST':
                 photo = self.get_object()
                 author = self.request.user
