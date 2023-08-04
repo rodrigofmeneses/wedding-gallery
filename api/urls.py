@@ -6,6 +6,6 @@ router = DefaultRouter()
 router.register(prefix="photos", viewset=PhotosViewset)
 
 urlpatterns = [
-    path('register', RegisterUserView.as_view()),
+    path('sign-up/', RegisterUserView.as_view()),
     *router.urls
 ]

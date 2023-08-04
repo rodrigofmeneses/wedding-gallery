@@ -34,6 +34,7 @@ class PhotosViewset(ModelViewSet):
 
     @swagger_auto_schema(
         request_body=no_body,
+        tags=['administrative'],
         responses={'200': PhotoSerializer()},
         operation_description="Approve a photo")
     @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])
@@ -46,6 +47,7 @@ class PhotosViewset(ModelViewSet):
 
     @swagger_auto_schema(
         request_body=no_body,
+        tags=['administrative'],
         responses={'200': PhotoSerializer()},
         operation_description="Decline a photo")
     @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])

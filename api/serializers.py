@@ -13,14 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email']
         )
-        # TODO cryptograph
         user.set_password(validated_data['password'])
         user.save()
         return user
 
 
 class PhotoSerializer(serializers.ModelSerializer):
-    # author = serializers.PrimaryKeyRelatedField()
+    author = serializers.SlugRelatedField(read_only=True, slug_field='username')
 
     class Meta:
         model = Photo
