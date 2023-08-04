@@ -29,7 +29,7 @@ You have received a request from a friend to create a gallery for their wedding 
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/your-username/wedding-gallery.git
+git clone https://github.com/rodrigofmeneses/wedding-gallery.git
 cd wedding-gallery
 ```
 
@@ -39,13 +39,15 @@ cd wedding-gallery
 docker-compose build
 ```
 
-3. Apply database migrations:
+3. Create a .env file, you can use .env.example for a basic setup.
+
+4. Apply database migrations:
 
 ```bash
 docker-compose run web python manage.py migrate
 ```
 
-4. Last but not least, create the married couple credentials
+5. Last but not least, create the married couple credentials
 
 ```bash
 docker-compose run web python manage.py createsuperuser

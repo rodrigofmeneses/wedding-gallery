@@ -1,18 +1,19 @@
 from pathlib import Path
 from datetime import timedelta
 import environ
+import os
+
+env = environ.Env()
 
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
