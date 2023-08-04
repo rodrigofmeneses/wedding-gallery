@@ -20,6 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+    # author = serializers.PrimaryKeyRelatedField()
+
     class Meta:
         model = Photo
         fields = ['id', 'author', 'url', 'created_at']
