@@ -37,7 +37,7 @@ class PhotosViewset(ModelViewSet):
         tags=['administrative'],
         responses={'200': PhotoSerializer()},
         operation_description="Approve a photo")
-    @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])
+    @action(detail=True, methods=['patch'], permission_classes=[IsAdminUser])
     def approve(self, request, pk=None):
         photo = self.get_object()
         photo.status = 1
@@ -50,7 +50,7 @@ class PhotosViewset(ModelViewSet):
         tags=['administrative'],
         responses={'200': PhotoSerializer()},
         operation_description="Decline a photo")
-    @action(detail=True, methods=['post'], permission_classes=[IsAdminUser])
+    @action(detail=True, methods=['patch'], permission_classes=[IsAdminUser])
     def decline(self, request, pk=None):
         photo = self.get_object()
         photo.status = 2
