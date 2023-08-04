@@ -9,7 +9,8 @@ from .models import Photo, Like
 from .serializers import (
     UserSerializer,
     PhotoSerializer,
-    LikeSerializer
+    LikeSerializer,
+    CommentSerializer
 )
 
 
@@ -82,6 +83,31 @@ class PhotosViewset(ModelViewSet):
                 like = like[0]
                 like.save()
                 return Response({"user": user.id, "photo": photo.id})
+
+    @swagger_auto_schema(
+        request_body=CommentSerializer,
+        tags=['comments'],
+        method='post',
+        responses={'200': CommentSerializer()},
+        operation_description="Comment in a photo")
+    @swagger_auto_schema(
+        tags=['comments'],
+        method='get',
+        responses={'200': CommentSerializer()},
+        operation_description="Get comments")
+    @action(detail=True, methods=['get', 'post'])
+    def comment(self, request, pk=None):
+        match request.method:
+            case 'GET':
+                ...
+            case 'POST':
+                photo = self.get_object()
+                author = self.request.user
+                serializer = CommentSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save(author=author, photo=photo)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
         if self.request.user.is_superuser:
